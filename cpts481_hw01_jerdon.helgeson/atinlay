@@ -1,0 +1,29 @@
+#! /usr/bin/env python3
+
+#Jerdon Helgeson
+#481 HW1
+#atinlay script
+
+import sys
+import igpay
+
+filename = sys.argv[1]
+f = open(filename, "r")
+for line in f.readlines():
+	sline = line.split(" ")
+	sLen = len(sline)
+	if(sLen == 0):
+		print("ZERO")
+		break
+	pigLine = ""
+	tempPig = ""
+	numW = 0
+	for word in sline:
+		tempPig = igpay.igpay(word.strip())
+		if(numW == 0):
+			pigLine += tempPig
+		else:
+			pigLine = pigLine + " " + tempPig
+		numW = numW + 1
+	pigLine = pigLine.replace("\n","")
+	print(pigLine)

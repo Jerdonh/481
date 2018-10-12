@@ -1,0 +1,50 @@
+#! /usr/bin/env python3
+
+#Jerdon Helgeson
+#481 HW1
+#Concord script
+
+import sys
+import concordance as C
+import pprint
+pp = pprint.PrettyPrinter(indent = 1, compact = True)
+
+def displayWords(words):
+    for word in words:
+        printable = ""
+        numWord = 0
+        daWord = word[0]
+        for tups in word[1]:
+            printable += "\t" + tups[0] + ".txt: " #+ tups[1] + "\n"
+            for i in tups[1]:
+                numWord = numWord + 1
+                printable = printable + str(i) +", "
+            if(printable[-2:] == ", "):
+                printable = printable[:-2]
+            printable = printable + "\n"
+        print(daWord, " (",numWord,"): ", sep = "")
+        print(printable)
+        
+
+filenames = sys.argv[1:]
+words = {} #dict of lists containing a tuple that holds the filename and a list of all the lines the word occurs on 
+           #words = {"Word" : [(filename,[lines]),(filename2,[lines])]}
+
+
+print(filenames)
+for file in filenames:
+    f = open(file,"r")
+    con = C.concordance(f)
+    for word in con:
+        if(word in words):
+            #if its already in the dict then add a new tuple to the list
+            words[word].append((file,con[word]))
+        else:
+            #if word isnt in the dict then it needs to be added
+            words[word] = [(file,con[word])]
+    f.close()
+words = sorted(words.items())
+displayWords(words)
+#pp.pprint(words)
+
+
